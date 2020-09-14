@@ -1,8 +1,6 @@
 <template>
   <div>
-    <!-- PART 1: Pass in a "complete" prop here -->
-    <Instructions />
-    <!-- PART 4: Modify the Show component to accept all of these props -->
+    <Instructions complete />
     <Show
       v-for="show in shows"
       :key="show.id"
