@@ -62,8 +62,27 @@ def delete_show(id):
     db.deleteById('shows', int(id))
     return create_response(message="Show deleted")
 
+@app.route("/shows/<id>", methods=['GET'])
+def get_show(id):
+    if db.getById('shows', int(id)) is None:
+        return create_response(status=404, message="No show with this id exists")
+    return create_response(db.getById('shows', int(id)))
 
-# TODO: Implement the rest of the API here!
+@app.route("/shows", methods=['POST'])
+def create_show():
+    body = request.get_json()
+    if body['name'] is None or body['episodes_seen'] is None:
+        return create_response(status=422, message="One or more argument(s) are missing")
+    created_show = db.create('shows', body)
+    return create_response(created_show, status=201)
+
+@app.route("/shows/<id>", methods=['PUT'])
+def update_show(id):
+    body = request.get_json()
+    if db.getById('shows', int(id)) is None:
+        return create_response(status=404, message="No show with this id exists")
+    updated_show = db.updateById('shows', int(id), body)
+    return create_response(updated_show)
 
 """
 ~~~~~~~~~~~~ END API ~~~~~~~~~~~~
